@@ -11,10 +11,12 @@ Liczba 110 wciąż nie jest palindromem, zatem Piotruś wykona jeszcze dodawanie
 Twoim zadaniem jest napisać program, który dla każdej liczby rozważanej przez Piotrusia wypisze palindrom(wynik obliczeń Piotrusia), oraz liczbę dodawań prowadzących do wyniku.
 
 Wejście
-Pierwsza linia wejścia zawiera liczbę t(t <= 80), określającą ile liczb znajduje się na kartce Piotrusia.Każda z następnych t linii zawiera dokładnie jedną liczbę naturalną n(1 <= n <= 80), dla której Piotruś musi wykonać obliczenia.
+Pierwsza linia wejścia zawiera liczbę t(t <= 80), określającą ile liczb znajduje się na kartce Piotrusia.
+Każda z następnych t linii zawiera dokładnie jedną liczbę naturalną n(1 <= n <= 80), dla której Piotruś musi wykonać obliczenia.
 
 Wyjście
-Dla kolejnych liczb podanych na kartce wypisz po jednej linijce zawierającej dwie liczby całkowite oddzielone spacją.Pierwsza oznacza palindrom otrzymany przez Piotrusia, druga -- liczbę dodawań wykonanych, by go otrzymać.
+Dla kolejnych liczb podanych na kartce wypisz po jednej linijce zawierającej dwie liczby całkowite oddzielone spacją.
+Pierwsza oznacza palindrom otrzymany przez Piotrusia, druga -- liczbę dodawań wykonanych, by go otrzymać.
 
     Przykład
     Wejście :
@@ -32,7 +34,62 @@ Wyjście :
 #include <iostream>
 using namespace std;
 
+int odwrotnosc(int x)
+{
+    int jednosci, dziesiatki, setki, tysiace, setkiT;
+    jednosci = x % 10;
+    if (x < 10) return jednosci;
+    else if (x < 100)
+    {      
+        dziesiatki = (x % 100 - jednosci) / 10;
+        return (jednosci * 10 + dziesiatki);
+    }
+    else if (x < 1000)
+    {
+        dziesiatki = (x % 100 - jednosci)/10;
+        setki = ((x % 1000 - dziesiatki - jednosci) / 100);
+        return (jednosci * 100 + dziesiatki *10 + setki);
+    }
+    else if (x < 10000)
+    {
+        dziesiatki = (x % 100 - jednosci) / 10;
+        setki = ((x % 1000 - dziesiatki - jednosci) / 100);
+        tysiace = ((x % 10000) - setki - dziesiatki - jednosci) / 1000;
+        return (jednosci * 1000 + dziesiatki * 100 + setki * 10 + tysiace);
+    }
+    else
+    {
+        dziesiatki = (x % 100 - jednosci) / 10;
+        setki = ((x % 1000 - dziesiatki - jednosci) / 100);
+        tysiace = ((x % 10000) - setki - dziesiatki - jednosci) / 1000;
+        setkiT = ((x % 100000) - tysiace - setki - dziesiatki - jednosci) / 10000;
+        return (jednosci * 10000 + dziesiatki * 1000 + setki * 100 + tysiace*10 + setkiT);
+    }
+}
+
 int main()
 {
-    
+    int t;
+    cin >> t;
+    for (int i = 0; i < t; i++)
+    {
+        int n, ile = 0;
+        cin >> n;
+        if (n > 9)
+        {
+            int x;
+            x = odwrotnosc(n);
+            while (n != x)
+            {
+                n += x;
+                x = odwrotnosc(n);
+                ile++;
+            }
+            cout << n << " " << ile << endl;
+
+        }
+        else
+            cout <<  n << " " << ile << endl;
+    }
+    return 0;
 }
